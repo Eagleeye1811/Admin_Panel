@@ -1,0 +1,39 @@
+.sidebar {
+  background: #1a1a1a;
+  min-height: 100vh;
+  width: 250px;
+  padding-top: 1rem;
+}
+
+.nav-link {
+  color: #a0a0a0;  /* Light grey color for default state */
+  padding: 0.75rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  transition: all 0.3s ease;
+  border-left: 3px solid transparent;
+}
+
+.nav-link:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;  /* Full white on hover */
+  border-left: 3px solid #e0e0e0;  /* Light grey border */
+  transform: translateX(5px);
+}
+
+.nav-link.active {
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;  /* Full white for active state */
+  border-left: 3px solid #e0e0e0;  /* Light grey border */
+}
+
+.nav-icon {
+  font-size: 1.2rem;
+  color: inherit;  /* Inherits color from parent nav-link */
+}
+
+.nav-text {
+  font-size: 0.95rem;
+  color: inherit;  /* Inherits color from parent nav-link */
+}
