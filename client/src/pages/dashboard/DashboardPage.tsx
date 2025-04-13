@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
-import { Container, Row, Col, Card, Spinner } from 'react-bootstrap';
+import { Container, Row, Col, Spinner } from 'react-bootstrap';
 import { FaBook, FaUsers, FaList } from 'react-icons/fa';
+import { useLocation } from 'react-router-dom';
 import StatsCard from '../../components/dashboard/StatsCard';
-import RecentStories from '../../components/dashboard/RecentStories';
+import BarChart from '../../components/dashboard/BarChart';
 import { getDashboardStats } from '../../services/dashboardService';
 import { DashboardStats } from '../../types/api.types';
 
@@ -10,22 +11,29 @@ const DashboardPage = () => {
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const location = useLocation();
+
+  const fetchStats = async () => {
+    try {
+      const data = await getDashboardStats();
+      setStats(data);
+    } catch (err) {
+      setError('Failed to load dashboard statistics');
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        const data = await getDashboardStats();
-        setStats(data);
-      } catch (err) {
-        setError('Failed to load dashboard statistics');
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchStats();
   }, []);
+
+  useEffect(() => {
+    if (location.state?.refresh) {
+      fetchStats();
+    }
+  }, [location.state]);
 
   if (loading) {
     return (
@@ -36,7 +44,7 @@ const DashboardPage = () => {
       </div>
     );
   }
-
+  
   if (error) {
     return (
       <Container fluid>
@@ -46,6 +54,14 @@ const DashboardPage = () => {
       </Container>
     );
   }
+  
+  if (!stats) {
+    return null; // Or fallback UI
+  }
+  
+  const uploadLabels = stats.uploadStats.map((stat) => stat.date);
+  const uploadData = stats.uploadStats.map((stat) => stat.count);
+
 
   return (
     <Container fluid>
@@ -78,14 +94,15 @@ const DashboardPage = () => {
         </Col>
       </Row>
 
-      <Card>
-        <Card.Header>
-          <h5 className="mb-0">Recent Stories</h5>
-        </Card.Header>
-        <Card.Body>
-          <RecentStories stories={stats?.recentStories} />
-        </Card.Body>
-      </Card>
+      <Row>
+        <Col md={12}>
+          <BarChart
+            labels={uploadLabels}
+            data={uploadData}
+            title="Stories Uploaded Over Time"
+          />
+        </Col>
+      </Row>
     </Container>
   );
 };

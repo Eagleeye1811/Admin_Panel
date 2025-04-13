@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Container, Table, Button, Badge } from 'react-bootstrap';
 import { FaEdit, FaTrash } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 import CategoryModal from '../../components/categories/CategoryModal';
 import { getCategories, createCategory, updateCategory, deleteCategory } from '../../services/categoryService';
 import { Category } from '../../types/api.types';
@@ -10,6 +11,7 @@ const CategoriesPage = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchCategories();
@@ -34,6 +36,9 @@ const CategoriesPage = () => {
         await createCategory(data);
       }
       fetchCategories();
+
+      // Notify dashboard to refresh stats
+      navigate('/dashboard', { state: { refresh: true } });
       setShowModal(false);
     } catch (error) {
       console.error('Failed to save category:', error);

@@ -11,7 +11,7 @@ export interface DashboardStats {
   totalStories: number;
   totalUsers: number;
   totalCategories: number;
-  recentStories: Story[];
+  uploadStats: { date: string; count: number }[];
 }
 
 export interface Story {
