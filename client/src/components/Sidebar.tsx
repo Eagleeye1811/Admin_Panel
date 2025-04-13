@@ -4,8 +4,7 @@ import {
   FaChartBar, 
   FaBook, 
   FaList, 
-  FaUsers, 
-  FaFlag 
+  FaUsers,  
 } from 'react-icons/fa';
 import '../styles/sidebar.css';
 
@@ -14,9 +13,8 @@ const Sidebar = () => {
     { path: '/dashboard', icon: FaChartBar, text: 'Dashboard' },
     { path: '/stories', icon: FaBook, text: 'Stories' },
     { path: '/categories', icon: FaList, text: 'Categories' },
-    { path: '/users', icon: FaUsers, text: 'Users' },
-    { path: '/reports', icon: FaFlag, text: 'Reports' }
-  ];
+    { path: '/users', icon: FaUsers, text: 'Users' }
+    ];
 
   return (
     <div className="sidebar">
