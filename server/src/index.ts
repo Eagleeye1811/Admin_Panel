@@ -8,7 +8,6 @@ import authRoutes from './routes/authRoutes';
 import dashboardRoutes from './routes/dashboardRoutes';
 import storyRoutes from './routes/storyRoutes';
 import categoryRoutes from './routes/categoryRoutes';
-import reportRoutes from './routes/reportRoutes';
 import userRoutes from './routes/userRoutes';
 
 dotenv.config();
@@ -26,7 +25,6 @@ app.use('/api/auth', authRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/stories', storyRoutes);
 app.use('/api/categories', categoryRoutes);
-app.use('/api/reports', reportRoutes);
 app.use('/api/users', userRoutes);
 
 // Error handling middleware
