@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Container, Table, Button, Badge } from 'react-bootstrap';
 import { FaEdit, FaTrash, FaUserPlus } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 import UserModal from '../../components/users/UserModal';
 import { getUsers, createUser, updateUserStatus, deleteUser } from '../../services/userService';
 import { User } from '../../types/api.types';
@@ -10,6 +11,7 @@ const UsersPage = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchUsers();
@@ -36,6 +38,9 @@ const UsersPage = () => {
         await createUser(data);
       }
       fetchUsers();
+
+      // Notify dashboard to refresh stats
+      navigate('/dashboard', { state: { refresh: true } });
       setShowModal(false);
     } catch (error) {
       console.error('Failed to save user:', error);
