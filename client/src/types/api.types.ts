@@ -6,14 +6,12 @@ export interface LoginResponse {
     role: string;
   };
 }
-
 export interface DashboardStats {
   totalStories: number;
   totalUsers: number;
   totalCategories: number;
   uploadStats: { date: string; count: number }[];
 }
-
 export interface Story {
   _id: string;
   title: string;
@@ -41,7 +39,9 @@ export interface User {
   email: string;
   role: string;
   isActive: boolean;
-  createdAt: string;
+  createdAt: string; 
   password?: string;
 }
+
+
 

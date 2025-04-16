@@ -21,6 +21,11 @@ export const updateUserStatus = async (id: string, isActive: boolean): Promise<U
   return response.data;
 };
 
+export const updateUser = async (id: string, data: Partial<User>): Promise<User> => {
+  const response = await api.put(`/users/${id}`, data);
+  return response.data;
+};
+
 export const deleteUser = async (id: string): Promise<void> => {
   await api.delete(`/users/${id}`);
 };

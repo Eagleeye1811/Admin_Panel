@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import { Container, Table, Button, Badge } from 'react-bootstrap';
+import { Container, Table, Button,  } from 'react-bootstrap';
 import { FaEdit, FaTrash, FaUserPlus } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import UserModal from '../../components/users/UserModal';
-import { getUsers, createUser, updateUserStatus, deleteUser } from '../../services/userService';
+import { getUsers, createUser, updateUser, deleteUser } from '../../services/userService';
 import { User } from '../../types/api.types';
 
 const UsersPage = () => {
@@ -31,8 +31,8 @@ const UsersPage = () => {
   const handleAddEdit = async (data: Partial<User>) => {
     try {
       if (selectedUser) {
-        // Update user logic (e.g., update user status or email)
-        await updateUserStatus(selectedUser._id, data.isActive ?? selectedUser.isActive);
+        // Update user details
+        await updateUser(selectedUser._id, data);
       } else {
         // Create new user
         await createUser(data);
@@ -76,7 +76,6 @@ const UsersPage = () => {
         <thead>
           <tr>
             <th>Email</th>
-            <th>Status</th>
             <th>Created At</th>
             <th>Actions</th>
           </tr>
@@ -86,11 +85,14 @@ const UsersPage = () => {
             <tr key={user._id}>
               <td>{user.email}</td>
               <td>
-                <Badge bg={user.isActive ? 'success' : 'danger'}>
-                  {user.isActive ? 'Active' : 'Inactive'}
-                </Badge>
+                {user.createdAt
+                  ? new Date(user.createdAt).toLocaleDateString('en-US', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                    })
+                  : 'N/A'}
               </td>
-              <td>{new Date(user.createdAt).toLocaleDateString()}</td>
               <td>
                 <Button
                   variant="info"

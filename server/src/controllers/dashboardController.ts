@@ -9,8 +9,6 @@ export const getDashboardStats = async (req: Request, res: Response) => {
     const totalUsers = await User.countDocuments();
     const totalCategories = await Category.countDocuments();
 
-    // Group by date (formatted) and count the number of stories per day,
-    // then add a "date" field to match what the frontend expects.
     const uploadStats = await Story.aggregate([
       {
         $group: {

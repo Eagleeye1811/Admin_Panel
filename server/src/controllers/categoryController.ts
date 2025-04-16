@@ -52,37 +52,26 @@ export const createCategory = async (req: Request, res: Response) => {
 // Update category
 export const updateCategory = async (req: Request, res: Response): Promise<any> => {
   try {
-    const { name, subcategories } = req.body;
-
-    if (!name || name.trim() === '') {
-      return res.status(400).json({ message: 'Category name is required' });
-    }
+    const { name, subcategories, isActive } = req.body;
 
     const category = await Category.findById(req.params.id);
     if (!category) {
       return res.status(404).json({ message: 'Category not found' });
     }
 
-    // Check if new name already exists (excluding current category)
-    const nameExists = await Category.findOne({ 
-      _id: { $ne: req.params.id }, 
-      name: name.trim() 
-    });
-    if (nameExists) {
-      return res.status(400).json({ message: 'Category name already exists' });
+    // Update fields
+    if (name) category.name = name.trim();
+    if (Array.isArray(subcategories)) {
+      category.subcategories = subcategories.filter((s) => s.trim());
     }
-
-    category.name = name.trim();
-    category.subcategories = Array.isArray(subcategories) ? 
-      subcategories.filter(s => s.trim()) : [];
+    if (typeof isActive !== 'undefined') {
+      category.isActive = isActive;
+    }
 
     const updatedCategory = await category.save();
     res.json(updatedCategory);
   } catch (error) {
-    res.status(500).json({ 
-      message: 'Error updating category',
-      error: error instanceof Error ? error.message : 'Unknown error'
-    });
+    res.status(500).json({ message: 'Error updating category', error });
   }
 };
 

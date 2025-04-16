@@ -20,10 +20,7 @@ export const createCategory = async (data: Partial<Category>): Promise<Category>
 };
 
 export const updateCategory = async (id: string, data: Partial<Category>): Promise<Category> => {
-  const response = await api.put(`/categories/${id}`, {
-    ...data,
-    subcategories: data.subcategories || []
-  });
+  const response = await api.put(`/categories/${id}`, data);
   return response.data;
 };
 

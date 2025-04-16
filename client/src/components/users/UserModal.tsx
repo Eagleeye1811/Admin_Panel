@@ -11,13 +11,13 @@ interface UserModalProps {
 
 const UserModal = ({ show, onHide, onSubmit, user }: UserModalProps) => {
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [isActive, setIsActive] = useState(true);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (show) {
       setEmail(user?.email || '');
-      setPassword(''); // Clear password field for security
+      setIsActive(user?.isActive ?? true);
     }
   }, [show, user]);
 
@@ -26,8 +26,7 @@ const UserModal = ({ show, onHide, onSubmit, user }: UserModalProps) => {
     setLoading(true);
 
     try {
-      // If editing a user, only send the email; otherwise, send email and password
-      await onSubmit(user ? { email } : { email, password });
+      await onSubmit({ email, isActive });
       onHide();
     } catch (error) {
       console.error('Failed to submit user:', error);
@@ -52,17 +51,14 @@ const UserModal = ({ show, onHide, onSubmit, user }: UserModalProps) => {
               required
             />
           </Form.Group>
-          {!user && (
-            <Form.Group className="mb-3">
-              <Form.Label>Password</Form.Label>
-              <Form.Control
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </Form.Group>
-          )}
+          <Form.Group className="mb-3">
+            <Form.Check
+              type="checkbox"
+              label="Active"
+              checked={isActive}
+              onChange={(e) => setIsActive(e.target.checked)}
+            />
+          </Form.Group>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={onHide}>
