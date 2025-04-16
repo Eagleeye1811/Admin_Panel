@@ -15,7 +15,7 @@ const Sidebar = () => {
     { path: '/categories', icon: FaList, text: 'Categories' },
     { path: '/users', icon: FaUsers, text: 'Users' }
     ];
-
+          
   return (
     <div className="sidebar">
       <Nav className="flex-column">

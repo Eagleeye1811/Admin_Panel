@@ -31,7 +31,11 @@ const CategoriesPage = () => {
   const handleAddEdit = async (data: Partial<Category>) => {
     try {
       if (selectedCategory) {
-        await updateCategory(selectedCategory._id, data);
+        // Include the isActive field when updating the category
+        await updateCategory(selectedCategory._id, {
+          ...data,
+          isActive: data.isActive ?? selectedCategory.isActive,
+        });
       } else {
         await createCategory(data);
       }
@@ -53,6 +57,15 @@ const CategoriesPage = () => {
       } catch (error) {
         console.error('Failed to delete category:', error);
       }
+    }
+  };
+
+  const toggleCategoryStatus = async (id: string, currentStatus: boolean) => {
+    try {
+      await updateCategory(id, { isActive: !currentStatus });
+      fetchCategories(); // Refresh the categories list
+    } catch (error) {
+      console.error('Failed to toggle category status:', error);
     }
   };
 
@@ -93,9 +106,13 @@ const CategoriesPage = () => {
                 </div>
               </td>
               <td>
-                <Badge bg={category.isActive ? 'success' : 'warning'}>
+                <Button
+                  variant={category.isActive ? 'success' : 'warning'}
+                  size="sm"
+                  onClick={() => toggleCategoryStatus(category._id, category.isActive)}
+                >
                   {category.isActive ? 'Active' : 'Inactive'}
-                </Badge>
+                </Button>
               </td>
               <td>
                 <Button

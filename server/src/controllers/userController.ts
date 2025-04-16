@@ -6,8 +6,8 @@ import User from '../models/User';
 export const getAllUsers = async (req: Request, res: Response) => {
   try {
     const users = await User.find()
-      .select('-password')
-      .sort({ createdAt: -1 });
+      .select('-password') // Exclude the password field
+      .sort({ createdAt: -1 }); // Sort by creation date
     res.json(users);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching users' });
@@ -71,6 +71,28 @@ export const updateUserStatus = async (req: Request, res: Response): Promise<any
     res.json(user);
   } catch (error) {
     res.status(500).json({ message: 'Error updating user status' });
+  }
+};
+
+// Update user
+export const updateUser = async (req: Request, res: Response): Promise<any> => {
+  try {
+    const { email, isActive } = req.body;
+
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Update user fields
+    if (email) user.email = email;
+    if (typeof isActive !== 'undefined') user.isActive = isActive;
+
+    const updatedUser = await user.save();
+    const { password: _, ...userResponse } = updatedUser.toObject(); // Exclude password
+    res.json(userResponse);
+  } catch (error) {
+    res.status(500).json({ message: 'Error updating user', error });
   }
 };
 

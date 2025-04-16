@@ -33,6 +33,7 @@ const CategoryModal = ({ show, onHide, onSubmit, category }: CategoryModalProps)
     }
   };
 
+
   const handleRemoveSubcategory = (index: number) => {
     setSubcategories((prev) => prev.filter((_, i) => i !== index));
   };

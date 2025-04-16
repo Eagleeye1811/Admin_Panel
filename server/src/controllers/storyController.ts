@@ -1,9 +1,8 @@
 import { Request, Response } from 'express';
 import Story from '../models/Story';
 
-/**
- * Get all stories with populated category name.
- */
+//Get all stories with populated category name.
+
 export const getAllStories = async (req: Request, res: Response) => {
   try {
     const stories = await Story.find()
@@ -16,9 +15,9 @@ export const getAllStories = async (req: Request, res: Response) => {
   }
 };
 
-/**
- * Get a single story by ID with category name.
- */
+
+//Get a single story by ID with category name.
+
 export const getStoryById = async (req: Request, res: Response): Promise<any> => {
   try {
     const story = await Story.findById(req.params.id)
@@ -34,9 +33,9 @@ export const getStoryById = async (req: Request, res: Response): Promise<any> =>
   }
 };
 
-/**
- * Create a new story. Assumes req.user is set by auth middleware.
- */
+
+//Create a new story. Assumes req.user is set by auth middleware.
+
 export const createStory = async (req: Request, res: Response) => {
   try {
     const { title, description, audioUrl, category, duration, isActive } = req.body;
@@ -58,9 +57,8 @@ export const createStory = async (req: Request, res: Response) => {
   }
 };
 
-/**
- * Update an existing story.
- */
+//Update an existing story.
+
 export const updateStory = async (req: Request, res: Response): Promise<any> => {
   try {
     const updatedStory = await Story.findByIdAndUpdate(
@@ -75,13 +73,13 @@ export const updateStory = async (req: Request, res: Response): Promise<any> => 
 
     res.json(updatedStory);
   } catch (error) {
-    res.status(500).json({ message: 'Error updating story' });
+    res.status(500).json({ message: 'Error updating story' });    
   }
 };
 
-/**
- * Delete a story by ID.
- */
+
+// Delete a story by ID.
+
 export const deleteStory = async (req: Request, res: Response): Promise<any> => {
   try {
     const story = await Story.findByIdAndDelete(req.params.id);

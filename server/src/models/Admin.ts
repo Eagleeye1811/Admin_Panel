@@ -28,3 +28,4 @@ adminSchema.methods.matchPassword = async function (enteredPassword: string): Pr
 
 const Admin: Model<IAdmin> = mongoose.model<IAdmin>('Admin', adminSchema);
 export default Admin;
+

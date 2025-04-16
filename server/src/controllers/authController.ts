@@ -11,9 +11,8 @@ export const signup = async (req: Request, res: Response): Promise<void> => {
       res.status(400).json({ message: 'Admin already exists' });
       return;
     }
-
+    
     const admin = await Admin.create({ email, password });
-
     res.status(201).json({
       token: generateToken(String(admin._id)),
     });
@@ -31,7 +30,6 @@ export const login = async (req: Request, res: Response): Promise<void> => {
       res.status(401).json({ message: 'Invalid credentials' });
       return;
     }
-
     res.status(200).json({
       token: generateToken(String(admin._id)),
     });
